@@ -36,6 +36,7 @@ export function ExportIssues(props: Props) {
         converter.json2csv(data, (err, csv) => {
           if (err) {
             console.error('error converting!');
+            return;
           }
           downloadExport(
             new Blob([csv!], {
