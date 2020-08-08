@@ -1,8 +1,10 @@
-import { Context, createContext } from "react";
-import { Octokit } from "@octokit/rest";
+import { Context, createContext } from 'react';
+import { Octokit } from '@octokit/rest';
 
 type AppContextType = {
-    octokit: Octokit,
+  octokit: Octokit;
 };
 
-export const AppContext: Context<AppContextType> = createContext({} as AppContextType);
+export const AppContext: Context<AppContextType> = createContext(
+  {} as AppContextType,
+);

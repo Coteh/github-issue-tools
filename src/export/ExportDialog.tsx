@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
-import {Button} from 'react-components';
+import { Button } from 'react-components';
 
 interface Props {
-    handleExport: Function;
+  handleExport: Function;
 }
 
 export function ExportDialog(props: Props) {
-    const {handleExport} = props;
-    const [repo, setRepo] = useState('');
+  const { handleExport } = props;
+  const [repo, setRepo] = useState('');
 
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100px',
-            margin: '0 auto',
-        }}>
-            <div>
-                <label>Repo</label>
-                <input value={repo} onChange={e => setRepo(e.target.value)}></input>
-            </div>
-            <Button onClick={e => handleExport(repo)}>Export</Button>
-        </div>
-    )
-};
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100px',
+        margin: '0 auto',
+      }}
+    >
+      <div>
+        <label>Repo</label>
+        <input value={repo} onChange={(e) => setRepo(e.target.value)}></input>
+      </div>
+      <Button onClick={(e) => handleExport(repo)}>Export</Button>
+    </div>
+  );
+}
