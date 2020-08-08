@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
@@ -7,6 +7,7 @@ import { Octokit } from '@octokit/rest';
 import { AppContext } from './context/AppContext';
 import { ExportIssues } from './export/ExportIssues';
 import { TabMenu } from './main/TabMenu';
+import { ImportIssues } from './import/ImportIssues';
 
 const octokit = new Octokit({
   auth: process.env.REACT_APP_GITHUB_AUTH_TOKEN,
@@ -36,7 +37,7 @@ function App() {
               <ExportIssues user={user} />
             </Route>
             <Route path="/import">
-              <div>TODO</div>
+              <ImportIssues user={user} />
             </Route>
           </Switch>
         </Router>

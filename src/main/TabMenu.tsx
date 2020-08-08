@@ -1,27 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface Props {}
 
 export function TabMenu(props: Props) {
+  const location = useLocation();
+
   return (
-    <div>
-      <Link
-        style={{
-          padding: 8,
-        }}
-        to="/import"
+    <div style={styles.tabMenu}>
+      <span
+        style={location.pathname === '/import' ? styles.activeTab : styles.tab}
       >
-        Import
-      </Link>
-      <Link
-        style={{
-          padding: 8,
-        }}
-        to="/export"
+        <Link to="/import">Import</Link>
+      </span>
+      <span
+        style={location.pathname === '/export' ? styles.activeTab : styles.tab}
       >
-        Export
-      </Link>
+        <Link to="/export">Export</Link>
+      </span>
     </div>
   );
 }
+
+const styles = {
+  tabMenu: {
+    padding: 8,
+    backgroundColor: 'lightgrey',
+  },
+  tab: {
+    padding: 8,
+    backgroundColor: 'darkgrey',
+  },
+  activeTab: {
+    padding: 8,
+    backgroundColor: 'grey',
+  },
+};
