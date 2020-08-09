@@ -39,6 +39,7 @@ function App() {
             <Route path="/import">
               <ImportIssues user={user} />
             </Route>
+            <Route path="/"></Route>
           </Switch>
         </Router>
       </AppContext.Provider>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { ExportDialog } from './ExportDialog';
+import { ExportScreen } from './ExportScreen';
 import converter from 'json-2-csv';
 
 interface Props {
@@ -50,5 +50,5 @@ export function ExportIssues(props: Props) {
       });
   };
 
-  return <ExportDialog handleExport={handleExport} />;
+  return <ExportScreen handleExport={handleExport} />;
 }

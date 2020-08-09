@@ -5,7 +5,7 @@ interface Props {
   handleExport: Function;
 }
 
-export function ExportDialog(props: Props) {
+export function ExportScreen(props: Props) {
   const { handleExport } = props;
   const [repo, setRepo] = useState('');
 

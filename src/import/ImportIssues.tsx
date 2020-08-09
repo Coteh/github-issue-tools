@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { ImportDialog } from './ImportDialog';
+import React, { useContext, useState } from 'react';
+import { ImportScreen } from './ImportScreen';
 import { AppContext } from '../context/AppContext';
-import converter from 'json-2-csv';
+import { parseCSVFile } from '../util/import-util';
 
 interface Props {
   user: string;
@@ -11,23 +11,33 @@ export function ImportIssues(props: Props) {
   const { octokit } = useContext(AppContext);
   const { user } = props;
 
+  const [importMappings, setImportMappings] = useState<Map<
+    string,
+    string
+  > | null>(null);
+
+  const handleImportMap = (importMap: Map<string, string>) => {
+    setImportMappings(importMap);
+  };
+
   const handleImport = (repo: string, csvFile: File) => {
-    let fr = new FileReader();
-    fr.readAsText(csvFile);
-    fr.onload = () => {
-      converter.csv2json(fr.result as string, (err, data) => {
-        if (err) {
-          console.log('Error reading CSV file');
-          return;
-        }
-        data?.forEach((record) => {
+    if (importMappings == null) {
+      console.log('Please select mappings');
+      return;
+    }
+    parseCSVFile(csvFile)
+      .then((records) => {
+        records.forEach((record) => {
+          let createParams: { [key: string]: string } = {
+            owner: user,
+            repo,
+          };
+          importMappings.forEach((column, field) => {
+            createParams[field] = record[column];
+          });
+          //   console.log(createParams);
           octokit.issues
-            .create({
-              owner: user,
-              repo,
-              title: record.title,
-              body: record.description,
-            })
+            .create(createParams as any)
             .then((res) => {
               if (res.status === 201) {
                 console.log('issue created');
@@ -59,9 +69,16 @@ export function ImportIssues(props: Props) {
               console.log('error creating issue', err);
             });
         });
+      })
+      .catch((err) => {
+        console.log('error creating issue', err);
       });
-    };
   };
 
-  return <ImportDialog handleImport={handleImport} />;
+  return (
+    <ImportScreen
+      handleImport={handleImport}
+      handleImportMap={handleImportMap}
+    />
+  );
 }
