@@ -35,7 +35,7 @@ export function ImportIssues(props: Props) {
           importMappings.forEach((column, field) => {
             createParams[field] = record[column];
           });
-          //   console.log(createParams);
+          // console.log(createParams);
           octokit.issues
             .create(createParams as any)
             .then((res) => {

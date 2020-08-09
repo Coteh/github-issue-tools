@@ -11,9 +11,6 @@ export function ImportMapDialog(props: Props) {
   const [importFieldMappings, setImportFieldMappings] = useState<
     Map<string, string>
   >(new Map());
-  const [userColumnSelections, setUserColumnSelections] = useState<string[]>(
-    new Array(userColumns.length).fill(''),
-  );
 
   //   TODO fix effect being called twice when file opened
   useEffect(() => {
@@ -22,16 +19,10 @@ export function ImportMapDialog(props: Props) {
   }, [importFieldMappings, handleImportMap]);
 
   //   TODO fix called twice
-  function setUserColumn(index: number, val: string) {
+  function setUserColumn(field: string, val: string) {
     //   console.log("call me");
-    setUserColumnSelections((colSelections) => [
-      ...colSelections.slice(0, index),
-      val,
-      ...colSelections.slice(index + 2),
-    ]);
-    if (val === '') return;
     setImportFieldMappings((importMap) => {
-      importMap.set(val, userColumns[index]);
+      importMap.set(val, field);
       return importMap;
     });
   }
@@ -46,24 +37,24 @@ export function ImportMapDialog(props: Props) {
           alignItems: 'center',
         }}
       >
-        {userColumns.map((col, i) => {
+        {importFields.map((field, i) => {
           return (
-            <Fragment key={`user_col_${i}`}>
+            <Fragment key={`import_field_${i}`}>
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                 }}
               >
-                <label>{col}</label>
+                <label>{field}</label>
                 <select
-                  value={userColumnSelections[i]}
-                  onChange={(e) => setUserColumn(i, e.target.value)}
+                  value={importFieldMappings.get(field)}
+                  onChange={(e) => setUserColumn(field, e.target.value)}
                 >
                   <option value=""></option>
-                  {importFields.map((field, j) => (
-                    <option key={`col_${i}_field_${j}`} value={field}>
-                      {field}
+                  {userColumns.map((col, j) => (
+                    <option key={`import_field_${i}_col_${j}`} value={col}>
+                      {col}
                     </option>
                   ))}
                 </select>
