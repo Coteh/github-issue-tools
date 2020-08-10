@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-components';
 
+const AUTH_SERVER_URL = process.env.REACT_APP_AUTH_SERVER_URL;
 const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
 const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
 const STATE = process.env.REACT_APP_STATE;
@@ -15,7 +16,7 @@ export function Auth(props: Props) {
 
   useEffect(() => {
     async function requestAccessToken(code: string, state: string) {
-      await fetch('/auth_token', {
+      await fetch(`${AUTH_SERVER_URL}/auth_token`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

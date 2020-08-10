@@ -3,10 +3,12 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -81,5 +83,7 @@ func main() {
 	}
 	r := mux.NewRouter()
 	r.HandleFunc("/auth_token", AuthTokenHandler).Methods("POST")
-	http.ListenAndServe(":8000", r)
+	port := os.Getenv("PORT")
+	fmt.Println("Listening on port: ", port)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST"}), handlers.AllowedOrigins([]string{"*"}))(r))
 }
