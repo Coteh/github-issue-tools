@@ -8,27 +8,50 @@ import { AppContext } from './context/AppContext';
 import { ExportIssues } from './export/ExportIssues';
 import { TabMenu } from './main/TabMenu';
 import { ImportIssues } from './import/ImportIssues';
+import { Auth } from './auth/Auth';
 
-const octokit = new Octokit({
-  auth: process.env.REACT_APP_GITHUB_AUTH_TOKEN,
-});
+let octokit: Octokit;
 
 function App() {
   const [user, setUser] = useState('');
+  const [authToken, setAuthToken] = useState<string | null>(null);
 
   useEffect(() => {
+    if (authToken == null) {
+      return;
+    }
+    octokit = new Octokit({
+      auth: authToken,
+    });
     async function getUserData() {
-      setUser((await octokit.request('/user')).data.login);
+      octokit
+        .request('/user')
+        .then((res) => {
+          setUser(res.data.login);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
     getUserData();
-  }, []);
+  }, [authToken]);
+
+  function handleAuthGranted(accessToken: string) {
+    setAuthToken(accessToken);
+  }
 
   return (
     <div className="App">
       <AppContext.Provider value={{ octokit }}>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>Welcome {user}!</p>
+          {(() => {
+            if (authToken) {
+              return <p>Welcome {user}!</p>;
+            } else {
+              return <p>Please authenticate</p>;
+            }
+          })()}
         </header>
         <Router>
           <TabMenu />
@@ -41,6 +64,7 @@ function App() {
             </Route>
             <Route path="/"></Route>
           </Switch>
+          <Auth handleAuthGranted={handleAuthGranted} />
         </Router>
       </AppContext.Provider>
     </div>
