@@ -3,10 +3,12 @@ import { Button } from 'react-components';
 
 interface Props {
   handleExport: Function;
+  repoNames: string[];
+  loading: boolean;
 }
 
 export function ExportScreen(props: Props) {
-  const { handleExport } = props;
+  const { handleExport, repoNames, loading } = props;
   const [repo, setRepo] = useState('');
 
   return (
@@ -21,7 +23,16 @@ export function ExportScreen(props: Props) {
     >
       <div>
         <label>Repo</label>
-        <input value={repo} onChange={(e) => setRepo(e.target.value)}></input>
+        <select value={repo} onChange={(e) => setRepo(e.target.value)}>
+          <option value="">
+            {loading ? 'Loading repositories...' : 'Please select a repository'}
+          </option>
+          {repoNames.map((repoName, i) => (
+            <option key={`repo_${i}_${repoName}`} value={repoName}>
+              {repoName}
+            </option>
+          ))}
+        </select>
       </div>
       <Button onClick={(e) => handleExport(repo)}>Export</Button>
     </div>

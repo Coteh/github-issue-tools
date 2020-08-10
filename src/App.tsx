@@ -55,15 +55,22 @@ function App() {
         </header>
         <Router>
           <TabMenu />
-          <Switch>
-            <Route path="/export">
-              <ExportIssues user={user} />
-            </Route>
-            <Route path="/import">
-              <ImportIssues user={user} />
-            </Route>
-            <Route path="/"></Route>
-          </Switch>
+          {(() => {
+            if (authToken == null) {
+              return <></>;
+            }
+            return (
+              <Switch>
+                <Route path="/export">
+                  <ExportIssues user={user} />
+                </Route>
+                <Route path="/import">
+                  <ImportIssues user={user} />
+                </Route>
+                <Route path="/"></Route>
+              </Switch>
+            );
+          })()}
           <Auth handleAuthGranted={handleAuthGranted} />
         </Router>
       </AppContext.Provider>

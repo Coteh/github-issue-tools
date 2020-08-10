@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'react-components';
 
 const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
@@ -11,6 +11,7 @@ interface Props {
 
 export function Auth(props: Props) {
   const { handleAuthGranted } = props;
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     async function requestAccessToken(code: string, state: string) {
@@ -32,6 +33,7 @@ export function Auth(props: Props) {
           }
           const result: { access_token: string } = await res.json();
           handleAuthGranted(result.access_token);
+          setAuthenticated(true);
         })
         .catch((err) => {
           console.error(err);
@@ -57,7 +59,15 @@ export function Auth(props: Props) {
 
   return (
     <div>
-      <Button onClick={(_) => requestIdentity()}>Authorize with GitHub</Button>
+      {(() => {
+        if (!authenticated) {
+          return (
+            <Button onClick={(_) => requestIdentity()}>
+              Authorize with GitHub
+            </Button>
+          );
+        }
+      })()}
     </div>
   );
 }
