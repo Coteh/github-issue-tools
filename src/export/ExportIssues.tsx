@@ -28,7 +28,7 @@ export function ExportIssues(props: Props) {
     }
 
     getRepos();
-  });
+  }, [user, octokit]);
 
   const downloadExport = (blob: Blob) => {
     let url = window.URL.createObjectURL(blob);
