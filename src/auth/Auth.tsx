@@ -32,7 +32,9 @@ export function Auth(props: Props) {
             console.log('error getting access token');
             return;
           }
-          const result: { access_token: string } = await res.json();
+          const result: {
+            access_token: string;
+          } = await res.json();
           handleAuthGranted(result.access_token);
           setAuthenticated(true);
         })
@@ -52,6 +54,7 @@ export function Auth(props: Props) {
     const code = params[0].split('=')[1];
     const state = params[1].split('=')[1];
     requestAccessToken(code, state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function requestIdentity() {
