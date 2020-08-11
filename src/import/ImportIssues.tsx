@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { ImportScreen } from './ImportScreen';
 import { AppContext } from '../context/AppContext';
-import { parseCSVFile } from '../util/import-util';
+import { parseCSVFile } from '../util/import';
 
 interface Props {
   user: string;

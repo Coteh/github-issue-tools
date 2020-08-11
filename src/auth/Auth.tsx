@@ -55,6 +55,8 @@ export function Auth(props: Props) {
   }, []);
 
   function requestIdentity() {
+    // TODO randomize state
+    // TODO perhaps generate url on backend instead? so that state string is generated on backend
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE}&scope=repo`;
   }
 

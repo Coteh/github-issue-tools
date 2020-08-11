@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-components';
-import { parseCSVHeaders } from '../util/import-util';
+import { parseCSVHeaders } from '../util/import';
 import { ImportMapDialog } from './ImportMapDialog';
 
 const IMPORT_FIELDS = ['title', 'body'];
