@@ -27,6 +27,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test-ci": "CI=true yarn test --coverage --coverageProvider=v8",
     "eject": "react-scripts eject",
     "lint": "eslint --ext js,ts,tsx src",
     "format": "prettier --config ./.prettierrc --write ."
