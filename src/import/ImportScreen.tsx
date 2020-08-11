@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-components';
+import { Button } from 'coteh-react-components';
 import { parseCSVHeaders } from '../util/import';
 import { ImportMapDialog } from './ImportMapDialog';
 

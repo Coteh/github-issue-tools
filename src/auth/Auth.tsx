@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-components';
+import { Button } from 'coteh-react-components';
 
 const AUTH_SERVER_URL = process.env.REACT_APP_AUTH_SERVER_URL;
 const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;

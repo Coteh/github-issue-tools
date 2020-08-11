@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from 'react-components';
+import { Button } from 'coteh-react-components';
 
 interface Props {
   handleExport: Function;
