@@ -79,7 +79,7 @@ func AuthTokenHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 	r := mux.NewRouter()
 	r.HandleFunc("/auth_token", AuthTokenHandler).Methods("POST")
