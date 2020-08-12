@@ -11,6 +11,8 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/throttled/throttled/v2"
+	"github.com/throttled/throttled/v2/store/memstore"
 )
 
 // AuthTokenRequest is the request to GitHub API access_token endpoint
@@ -77,13 +79,41 @@ func AuthTokenHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// Load env vars from .env file if there is one
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Error loading .env file")
 	}
+
+	// Setup rate limiting memory store
+	store, err := memstore.New(65536)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Setup rate limiting quota
+	quota := throttled.RateQuota{
+		MaxRate: throttled.PerMin(20),
+		MaxBurst: 5,
+	}
+
+	// Setup rate limiter
+	rateLimiter, err := throttled.NewGCRARateLimiter(store, quota)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	httpRateLimiter := throttled.HTTPRateLimiter{
+		RateLimiter: rateLimiter,
+		VaryBy: &throttled.VaryBy{Path: true},
+	}
+
+	// Setup gorilla multiplexer
 	r := mux.NewRouter()
 	r.HandleFunc("/auth_token", AuthTokenHandler).Methods("POST")
 	port := os.Getenv("PORT")
 	fmt.Println("Listening on port: ", port)
-	http.ListenAndServe(fmt.Sprintf(":%s", port), handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST"}), handlers.AllowedOrigins([]string{"*"}))(r))
+
+	// Serve requests
+	http.ListenAndServe(fmt.Sprintf(":%s", port), httpRateLimiter.RateLimit(handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 }
