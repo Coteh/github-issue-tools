@@ -4,7 +4,6 @@ import { Button } from 'coteh-react-components';
 const AUTH_SERVER_URL = process.env.REACT_APP_AUTH_SERVER_URL;
 const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
 const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-const STATE = process.env.REACT_APP_STATE;
 
 interface Props {
   handleAuthGranted: Function;
@@ -22,6 +21,7 @@ export function Auth(props: Props) {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           code,
           state,
@@ -57,10 +57,17 @@ export function Auth(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function requestIdentity() {
-    // TODO randomize state
-    // TODO perhaps generate url on backend instead? so that state string is generated on backend
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE}&scope=repo`;
+  async function requestIdentity() {
+    const resp = await fetch(`${AUTH_SERVER_URL}/gen_state`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    const respJson = await resp.json();
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${respJson.state}&scope=repo`;
   }
 
   return (
