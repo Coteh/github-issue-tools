@@ -13,7 +13,6 @@ Create `.env.local` file in project root:
 ```
 REACT_APP_GITHUB_CLIENT_ID=<client id from GitHub>
 REACT_APP_REDIRECT_URI=<URI to redirect users back to after granting access>
-REACT_APP_STATE=<random and unguessable>
 REACT_APP_AUTH_SERVER_URL=<url to auth server>
 ```
 
