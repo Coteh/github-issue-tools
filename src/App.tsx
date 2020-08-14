@@ -30,6 +30,9 @@ function App() {
           setUser(res.data.login);
         })
         .catch((err) => {
+          if (err.status === 401) {
+            setAuthToken(null);
+          }
           console.error(err);
         });
     }
@@ -71,7 +74,10 @@ function App() {
               </Switch>
             );
           })()}
-          <Auth handleAuthGranted={handleAuthGranted} />
+          <Auth
+            handleAuthGranted={handleAuthGranted}
+            authenticated={authToken != null}
+          />
         </Router>
       </AppContext.Provider>
     </div>

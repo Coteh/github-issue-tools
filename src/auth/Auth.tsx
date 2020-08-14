@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'coteh-react-components';
 
 const AUTH_SERVER_URL = process.env.REACT_APP_AUTH_SERVER_URL;
 
 interface Props {
   handleAuthGranted: Function;
+  authenticated: boolean;
 }
 
 export function Auth(props: Props) {
-  const { handleAuthGranted } = props;
-  const [authenticated, setAuthenticated] = useState(false);
+  const { handleAuthGranted, authenticated } = props;
 
   useEffect(() => {
     async function getAccessToken() {
@@ -23,7 +23,6 @@ export function Auth(props: Props) {
       }
       const jsonResp = await resp.json();
       handleAuthGranted(jsonResp.accessToken);
-      setAuthenticated(true);
     }
     getAccessToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
