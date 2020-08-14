@@ -5,11 +5,12 @@ import { parseCSVFile } from '../util/import';
 
 interface Props {
   user: string;
+  RepoSelect: any;
 }
 
 export function ImportIssues(props: Props) {
   const { octokit } = useContext(AppContext);
-  const { user } = props;
+  const { user, RepoSelect } = props;
 
   const [importMappings, setImportMappings] = useState<Map<
     string,
@@ -35,7 +36,6 @@ export function ImportIssues(props: Props) {
           importMappings.forEach((column, field) => {
             createParams[field] = record[column];
           });
-          // console.log(createParams);
           octokit.issues
             .create(createParams as any)
             .then((res) => {
@@ -79,6 +79,7 @@ export function ImportIssues(props: Props) {
     <ImportScreen
       handleImport={handleImport}
       handleImportMap={handleImportMap}
+      RepoSelect={RepoSelect}
     />
   );
 }

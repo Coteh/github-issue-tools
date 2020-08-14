@@ -6,15 +6,6 @@ describe('ImportScreen', () => {
   it('renders without crash', () => {
     render(<ImportScreen handleImport={() => {}} handleImportMap={() => {}} />);
   });
-  it('displays repository names in dropdown', () => {
-    fail('Not implemented');
-  });
-  it("displays 'loading repositories' text when loading repositories", () => {
-    fail('Not implemented');
-  });
-  it("displays 'please select' text when repositories are loaded", () => {
-    fail('Not implemented');
-  });
   it('displays a file selector to select file to import', () => {
     fail('Not implemented');
   });
