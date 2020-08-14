@@ -1,0 +1,7 @@
+{
+  "defaults": {
+    "origin": "http://localhost:8080",
+    "transport": "session",
+    "state": "true"
+  }
+}

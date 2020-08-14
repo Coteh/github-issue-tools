@@ -60,6 +60,7 @@ export function ImportScreen(props: Props) {
             console.log('Please specify a file');
             return;
           }
+          //  TODO add repo selector to import screen and set its value here
           handleImport('test-repo', fileList[0]);
         }}
       >
