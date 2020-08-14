@@ -18,7 +18,7 @@ var config = Object.assign(require('./config.json'), {
 express()
   .use(
     session({
-      secret: 'grant',
+      secret: process.env.SESSION_SECRET || 'grant',
       resave: false,
       saveUninitialized: false,
     }),
