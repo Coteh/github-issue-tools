@@ -1,7 +1,8 @@
-var express = require('express');
-var session = require('express-session');
-var cors = require('cors');
-var grant = require('grant').express();
+const express = require('express');
+const session = require('express-session');
+const redis = require('redis');
+const cors = require('cors');
+const grant = require('grant').express();
 require('dotenv').config();
 
 var config = Object.assign(require('./config.json'), {
@@ -13,7 +14,10 @@ var config = Object.assign(require('./config.json'), {
   },
 });
 
-// console.log(config);
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL,
+});
+const RedisStore = require('connect-redis')(session);
 
 express()
   .use(
@@ -21,6 +25,10 @@ express()
       secret: process.env.SESSION_SECRET || 'grant',
       resave: false,
       saveUninitialized: false,
+      store:
+        process.env.NODE_ENV === 'production'
+          ? new RedisStore({ client: redisClient })
+          : undefined,
     }),
   )
   .use(grant(config))
