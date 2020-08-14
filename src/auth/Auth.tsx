@@ -12,22 +12,20 @@ export function Auth(props: Props) {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const href = window.location.href;
-    if (href.indexOf('?') < 0) {
-      return;
+    async function getAccessToken() {
+      const resp = await fetch(`${AUTH_SERVER_URL}/get_token`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      if (resp.status !== 200) {
+        console.error('could not get token');
+        return;
+      }
+      const jsonResp = await resp.json();
+      handleAuthGranted(jsonResp.accessToken);
+      setAuthenticated(true);
     }
-    const params = href.split('?')[1].split('&');
-    if (params.length !== 1) {
-      return;
-    }
-    const accessToken = params[0].split('=')[1];
-    if (!accessToken) {
-      console.error('Error getting access token');
-      return;
-    }
-    handleAuthGranted(accessToken);
-    setAuthenticated(true);
-    global.history.pushState(null, '', href.split('?')[0]);
+    getAccessToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
