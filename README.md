@@ -48,10 +48,9 @@ REDIS_URL=<URL for Redis session server (production only)>
 1. `yarn build`
 1. Host server or host on JAMstack deployment service such as Netlify
 
-### Auth Server to App Engine
+### Auth Grant Server to App Engine
 
 (assuming you have project setup and `gcloud` installed with it pointing to project)
 
-~~1. `cd auth`~~  
-~~1. `gcloud app deploy app.yaml`~~  
-TODO update deployment instructions for backend
+1. `cd auth-grant`
+1. `gcloud app deploy app.yaml`
