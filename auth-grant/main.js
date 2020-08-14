@@ -10,7 +10,7 @@ var config = Object.assign(require('./config.json'), {
     key: process.env.GITHUB_CLIENT_ID,
     secret: process.env.GITHUB_CLIENT_SECRET,
     scope: ['repo'],
-    response: ['tokens', 'profile', 'raw'],
+    response: ['tokens'],
   },
 });
 
