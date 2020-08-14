@@ -1,34 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { ExportScreen } from './ExportScreen';
 import converter from 'json-2-csv';
 
 interface Props {
   user: string;
+  RepoSelect: any;
 }
 
 export function ExportIssues(props: Props) {
   const { octokit } = useContext(AppContext);
-  const { user } = props;
-
-  const [repoNames, setRepoNames] = useState<string[]>([]);
-  const [isLoadingDone, setIsLoadingDone] = useState(false);
-
-  useEffect(() => {
-    if (!octokit) {
-      return;
-    }
-    async function getRepos() {
-      setRepoNames(
-        (await octokit.paginate(octokit.repos.listForAuthenticatedUser)).map(
-          (repo: any) => repo.name,
-        ),
-      );
-      setIsLoadingDone(true);
-    }
-
-    getRepos();
-  }, [user, octokit]);
+  const { user, RepoSelect } = props;
 
   const downloadExport = (blob: Blob) => {
     let url = window.URL.createObjectURL(blob);
@@ -69,11 +51,5 @@ export function ExportIssues(props: Props) {
       });
   };
 
-  return (
-    <ExportScreen
-      handleExport={handleExport}
-      repoNames={repoNames}
-      loading={!isLoadingDone}
-    />
-  );
+  return <ExportScreen handleExport={handleExport} RepoSelect={RepoSelect} />;
 }

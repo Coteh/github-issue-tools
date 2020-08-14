@@ -8,12 +8,14 @@ const IMPORT_FIELDS = ['title', 'body'];
 interface Props {
   handleImport: Function;
   handleImportMap: Function;
+  RepoSelect: any;
 }
 
 export function ImportScreen(props: Props) {
   const [fileList, setFileList] = useState<FileList | null>(null);
   const [columns, setColumns] = useState<string[]>([]);
-  const { handleImport, handleImportMap } = props;
+  const [repo, setRepo] = useState('');
+  const { handleImport, handleImportMap, RepoSelect } = props;
 
   useEffect(() => {
     if (fileList != null) {
@@ -54,14 +56,16 @@ export function ImportScreen(props: Props) {
           />
         );
       })()}
+      {React.cloneElement(RepoSelect, {
+        onRepoSelect: (repoName: string) => setRepo(repoName),
+      })}
       <Button
         onClick={(_) => {
           if (fileList == null) {
             console.log('Please specify a file');
             return;
           }
-          //  TODO add repo selector to import screen and set its value here
-          handleImport('test-repo', fileList[0]);
+          handleImport(repo, fileList[0]);
         }}
       >
         Import

@@ -9,12 +9,17 @@ import { ExportIssues } from './export/ExportIssues';
 import { TabMenu } from './main/TabMenu';
 import { ImportIssues } from './import/ImportIssues';
 import { Auth } from './auth/Auth';
+import { RepositorySelect } from './input/RepositorySelect';
+import { getUserRepositories } from './util/gh-repository';
 
 let octokit: Octokit;
 
 function App() {
   const [user, setUser] = useState('');
   const [authToken, setAuthToken] = useState<string | null>(null);
+
+  const [repoNames, setRepoNames] = useState<string[]>([]);
+  const [isLoadingDone, setIsLoadingDone] = useState(false);
 
   useEffect(() => {
     if (authToken == null) {
@@ -38,6 +43,18 @@ function App() {
     }
     getUserData();
   }, [authToken]);
+
+  useEffect(() => {
+    if (!octokit) {
+      return;
+    }
+    async function getRepos() {
+      setRepoNames(await getUserRepositories(octokit));
+      setIsLoadingDone(true);
+    }
+
+    getRepos();
+  }, [user]);
 
   function handleAuthGranted(accessToken: string) {
     setAuthToken(accessToken);
@@ -65,10 +82,26 @@ function App() {
             return (
               <Switch>
                 <Route path="/export">
-                  <ExportIssues user={user} />
+                  <ExportIssues
+                    user={user}
+                    RepoSelect={
+                      <RepositorySelect
+                        repoNames={repoNames}
+                        loading={!isLoadingDone}
+                      />
+                    }
+                  />
                 </Route>
                 <Route path="/import">
-                  <ImportIssues user={user} />
+                  <ImportIssues
+                    user={user}
+                    RepoSelect={
+                      <RepositorySelect
+                        repoNames={repoNames}
+                        loading={!isLoadingDone}
+                      />
+                    }
+                  />
                 </Route>
                 <Route path="/"></Route>
               </Switch>
