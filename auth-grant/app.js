@@ -5,19 +5,29 @@ const cors = require('cors');
 const grant = require('grant').express();
 require('dotenv').config();
 
-var config = Object.assign(require('./config.json'), {
+var config = {
+  defaults: {
+    origin: process.env.ORIGIN,
+    transport: 'session',
+    state: true,
+  },
   github: {
     key: process.env.GITHUB_CLIENT_ID,
     secret: process.env.GITHUB_CLIENT_SECRET,
     scope: ['repo'],
     response: ['tokens'],
   },
-});
+};
 
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL,
-});
-const RedisStore = require('connect-redis')(session);
+let redisClient;
+let RedisStore;
+
+if (process.env.NODE_ENV === 'production') {
+  redisClient = redis.createClient({
+    url: process.env.REDIS_URL,
+  });
+  RedisStore = require('connect-redis')(session);
+}
 
 express()
   .use(
@@ -43,6 +53,15 @@ express()
       console.log('User has not granted authentication yet');
       res.status(403).send({
         message: 'User has not granted authentication yet',
+      });
+      return;
+    }
+    if (!req.session.grant.response.access_token) {
+      console.log(
+        `Error getting token, message: '${req.session.grant.response.error}'`,
+      );
+      res.status(403).send({
+        message: 'Error getting access token',
       });
       return;
     }
