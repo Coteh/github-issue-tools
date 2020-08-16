@@ -72,4 +72,4 @@ express()
   .use('/connect/github/callback', (req, res) => {
     res.redirect(process.env.REDIRECT_URI);
   })
-  .listen(8080);
+  .listen(process.env.PORT);
