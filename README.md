@@ -3,11 +3,20 @@
 [![CircleCI](https://circleci.com/gh/Coteh/github-issue-tools.svg?style=shield)](https://circleci.com/gh/Coteh/github-issue-tools)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3f29e058-5c26-4434-9172-dab2accfaaa3/deploy-status)](https://app.netlify.com/sites/issue-tools/deploys)
 
-A web app to quickly pull down GitHub Issues as a CSV.
+A web app to more efficiently work with GitHub Issues. Allows for import and export of issues from/to a CSV file.
 
 **UI is still being worked on**
 
 ![Screenshot](screenshot.png)
+
+## Features
+
+- Import issues from CSV
+  - Title and description can be mapped from CSV columns using the interface.
+  - State also supported: If issue is closed in CSV, it'll be closed on GitHub too.
+- Export issues to CSV
+  - Just title, state, and description are supported at the moment.
+- GitHub OAuth support
 
 ## Installation
 
