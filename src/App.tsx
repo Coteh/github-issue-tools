@@ -6,11 +6,11 @@ import './App.css';
 import { Octokit } from '@octokit/rest';
 import { AppContext } from './context/AppContext';
 import { ExportIssues } from './export/ExportIssues';
-import { TabMenu } from './main/TabMenu';
 import { ImportIssues } from './import/ImportIssues';
 import { Auth } from './auth/Auth';
 import { RepositorySelect } from './input/RepositorySelect';
 import { getUserRepositories } from './util/gh-repository';
+import { RouterTabMenu } from './main/RouterTabMenu';
 
 let octokit: Octokit;
 
@@ -65,16 +65,24 @@ function App() {
       <AppContext.Provider value={{ octokit }}>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          {(() => {
-            if (authToken) {
-              return <p>Welcome {user}!</p>;
-            } else {
-              return <p>Please authenticate</p>;
-            }
-          })()}
         </header>
         <Router>
-          <TabMenu />
+          <RouterTabMenu
+            tabData={[
+              {
+                path: '/',
+                title: 'Home',
+              },
+              {
+                path: '/import',
+                title: 'Import',
+              },
+              {
+                path: '/export',
+                title: 'Export',
+              },
+            ]}
+          />
           {(() => {
             if (authToken == null) {
               return <></>;
@@ -103,7 +111,15 @@ function App() {
                     }
                   />
                 </Route>
-                <Route path="/"></Route>
+                <Route path="/">
+                  {(() => {
+                    if (authToken) {
+                      return <p>Welcome {user}!</p>;
+                    } else {
+                      return <p>Please authenticate</p>;
+                    }
+                  })()}
+                </Route>
               </Switch>
             );
           })()}

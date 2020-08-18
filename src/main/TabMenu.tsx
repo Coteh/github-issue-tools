@@ -1,23 +1,32 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 
-interface Props {}
+export interface TabInfo {
+  path: string;
+  title: string;
+}
+
+interface Props {
+  tabData: TabInfo[];
+  selected: string;
+  linkRender: (tabDatum: TabInfo, onSelected: Function) => JSX.Element;
+  onSelected?: Function;
+}
 
 export function TabMenu(props: Props) {
-  const location = useLocation();
+  const { tabData, linkRender, selected, onSelected } = props;
 
   return (
     <div style={styles.tabMenu}>
-      <span
-        style={location.pathname === '/import' ? styles.activeTab : styles.tab}
-      >
-        <Link to="/import">Import</Link>
-      </span>
-      <span
-        style={location.pathname === '/export' ? styles.activeTab : styles.tab}
-      >
-        <Link to="/export">Export</Link>
-      </span>
+      {tabData.map((tabDatum, i) => {
+        return (
+          <span
+            key={`tab_datum_${i}`}
+            style={selected === tabDatum.path ? styles.activeTab : styles.tab}
+          >
+            {linkRender(tabDatum, onSelected ? onSelected : () => {})}
+          </span>
+        );
+      })}
     </div>
   );
 }

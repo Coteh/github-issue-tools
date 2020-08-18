@@ -1,24 +1,40 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import { TabMenu } from './TabMenu';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 describe('TabMenu', () => {
   it('renders without crash', () => {
     render(
-      <Router>
-        <TabMenu />
-      </Router>,
+      <TabMenu tabData={[]} selected="" linkRender={(_) => <span></span>} />,
     );
   });
-  it('renders with default tab selected', () => {
-    fail('Not implemented');
-  });
   it('can switch to another tab when clicked', () => {
-    fail('Not implemented');
-  });
-  it('switches focused tab when another tab is selected', () => {
-    fail('Not implemented');
+    const stub = jest.fn();
+    const { getByText } = render(
+      <TabMenu
+        tabData={[
+          {
+            path: '/',
+            title: 'Home',
+          },
+          {
+            path: '/page',
+            title: 'Page',
+          },
+        ]}
+        selected="/"
+        linkRender={(info, onSelected) => (
+          <span onClick={(e) => onSelected(e)}>{info.title}</span>
+        )}
+        onSelected={stub}
+      />,
+    );
+
+    expect(stub).not.toHaveBeenCalled();
+
+    fireEvent.click(getByText('Page'));
+
+    expect(stub).toHaveBeenCalledTimes(1);
   });
 });
