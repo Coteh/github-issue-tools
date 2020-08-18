@@ -70,3 +70,15 @@ REDIS_URL=<URL for Redis session server (production only)>
 
 1. `cd auth-grant`
 1. `gcloud app deploy app.yaml`
+
+## Issues
+
+- UI not complete
+- Cannot map column more than once
+- See [Issues](https://github.com/Coteh/test-repo/issues) page for more
+
+## Future Additions
+
+- Quick Add Issue
+- Pin frequently used projects for quick access
+- Mass delete issues

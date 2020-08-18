@@ -15,13 +15,24 @@ export function ImportMapDialog(props: Props) {
   //   TODO fix effect being called twice when file opened
   useEffect(() => {
     handleImportMap(importFieldMappings);
-    console.log('map set');
+    // console.log('map set');
   }, [importFieldMappings, handleImportMap]);
 
   //   TODO fix called twice
   function setUserColumn(field: string, val: string) {
     //   console.log("call me");
+    if (importFieldMappings.has(val)) {
+      console.log('Cannot map a column twice');
+      console.log(importFieldMappings);
+      return;
+    }
     setImportFieldMappings((importMap) => {
+      // Brute force way to delete old entry containing val
+      importMap.forEach((value, key) => {
+        if (value === field) {
+          importMap.delete(key);
+        }
+      });
       importMap.set(val, field);
       return importMap;
     });
@@ -48,6 +59,7 @@ export function ImportMapDialog(props: Props) {
               >
                 <label>{field}</label>
                 <select
+                  // TODO fix React value not binding
                   value={importFieldMappings.get(field)}
                   onChange={(e) => setUserColumn(field, e.target.value)}
                 >

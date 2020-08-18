@@ -33,16 +33,18 @@ export function ImportIssues(props: Props) {
             owner: user,
             repo,
           };
-          importMappings.forEach((column, field) => {
+          // console.log(importMappings);
+          importMappings.forEach((field, column) => {
             createParams[field] = record[column];
           });
+          // console.log(createParams);
           octokit.issues
             .create(createParams as any)
             .then((res) => {
               if (res.status === 201) {
                 console.log('issue created');
                 let issue = res.data;
-                if (record.state.toLowerCase() === 'closed') {
+                if (record.state && record.state.toLowerCase() === 'closed') {
                   octokit.issues
                     .update({
                       owner: user,
