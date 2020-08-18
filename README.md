@@ -2,6 +2,10 @@
 
 A web app to quickly pull down GitHub Issues as a CSV.
 
+**UI is still being worked on**
+
+![Screenshot](screenshot.png)
+
 ## Installation
 
 ### Environment Variables

@@ -64,7 +64,7 @@ function App() {
     <div className="App">
       <AppContext.Provider value={{ octokit }}>
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <h2>Issue Tools</h2>
         </header>
         <Router>
           <RouterTabMenu
