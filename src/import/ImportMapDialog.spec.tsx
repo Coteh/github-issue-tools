@@ -21,4 +21,13 @@ describe('ImportMapDialog', () => {
   it('invokes import map callback when field is mapped', () => {
     fail('Not implemented');
   });
+  it('allows a field to be mapped to multiple columns', () => {
+    fail('Not implemented');
+  });
+  it('does not allow multiple columns to be mapped to a single field', () => {
+    fail('Not implemented');
+  });
+  it('removes the previous mapping for a column when selected', () => {
+    fail('Not implemented');
+  });
 });
