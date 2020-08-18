@@ -21,7 +21,17 @@ export function Auth(props: Props) {
         console.error('could not get token');
         return;
       }
-      const jsonResp = await resp.json();
+      let jsonResp;
+      try {
+        jsonResp = await resp.json();
+      } catch (e) {
+        console.error('could not get token: ', e);
+        return;
+      }
+      if (!jsonResp.accessToken) {
+        console.error('could not get token, not found in response');
+        return;
+      }
       handleAuthGranted(jsonResp.accessToken);
     }
     getAccessToken();
