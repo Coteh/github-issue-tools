@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { ImportScreen } from './ImportScreen';
-import { AppContext } from '../context/AppContext';
 import { parseCSVFile } from '../util/import';
+import useAppContext from '../context/useAppContext';
 
 interface Props {
   user: string;
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function ImportIssues(props: Props) {
-  const { octokit } = useContext(AppContext);
+  const { octokit } = useAppContext();
   const { user, RepoSelect } = props;
 
   const [importMappings, setImportMappings] = useState<Map<

@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
+import React from 'react';
 import { ExportScreen } from './ExportScreen';
 import converter from 'json-2-csv';
+import useAppContext from '../context/useAppContext';
 
 interface Props {
   user: string;
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function ExportIssues(props: Props) {
-  const { octokit } = useContext(AppContext);
+  const { octokit } = useAppContext();
   const { user, RepoSelect } = props;
 
   const downloadExport = (blob: Blob) => {

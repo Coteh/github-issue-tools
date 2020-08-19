@@ -16,12 +16,15 @@ describe('ExportIssues', () => {
     fetch.mockClear();
   });
   it('renders without crash', () => {
-    render(<ExportIssues user={'test'} />);
+    render(<ExportIssues user={'test'} RepoSelect={<></>} />);
   });
-  it('loads issues list from repository when export is triggered', () => {
+  it('calls export function when export button is clicked', () => {
     fail('Not implemented');
   });
-  it('performs csv download when export is triggered', () => {
+  it('exports data when export is triggered', () => {
+    fail('Not implemented');
+  });
+  it('opens csv download when export is triggered', () => {
     fail('Not implemented');
   });
 });
